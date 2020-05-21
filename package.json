@@ -1,0 +1,16 @@
+{
+  "name": "block-menu",
+  "version": "1.0.0",
+  "description": "menus",
+  "main": "dist/block-menu",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
+    "dev": "webpack-dev-server --open --mode development"
+  },
+  "keywords": [
+    "block-menu"
+  ],
+  "author": "xiaofanqie",
+  "license": "ISC"
+}
