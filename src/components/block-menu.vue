@@ -1,13 +1,17 @@
 <template>
   <div class="block-menu">
     <div class="menu-list">
-      <div v-for="i in menuArr" :key="i.id" class="menu-item" @mouseenter="enter(index)" @mouseleave="leave()">
-        <img :src="i.icon" alt="">
-        <p>{{ i.title }}</p>
-      </div>
-      <div class="hover-list">
-        <div v-for="i in hoverList" :key="i.hoverList">
-          {{ i.name }}
+      <div v-for="i in menuArr" :key="i.id" class="menu-item" @mouseenter="menuEnter($event, i)"
+          @mouseleave="menuleave($event, i)" @click="menuClick(i)">
+        <div class="menu-content">
+          <img :src="i.icon" alt="">
+          <p>{{ i.title }}</p>
+        </div>
+        <div class="hover-list" v-if="i.children && i.children.length !== 0">
+          <div v-for="item in i.children" :key="item.itemId" @click.stop="itemClick(item)">
+            <img :src="item.icon" alt="" v-if="item.icon">
+            <p>{{ item.name }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -24,42 +28,22 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     return {
-      menuArr: [
-        {
-          title: '监测站',
-          icon: require('../../../assets/setIcon.png'),
-          menuId: 1
-        },
-        {
-          title: '项目',
-          icon: require('../../../assets/setIcon.png'),
-          menuId: 2
-        },
-        {
-          title: '行政区域',
-          icon: require('../../../assets/setIcon.png'),
-          menuId: 3
-        },
-        {
-          title: '基础信息',
-          icon: require('../../../assets/setIcon.png'),
-          menuId: 4
-        },
-        {
-          title: '地图信息',
-          icon: require('../../../assets/setIcon.png'),
-          menuId: 5
-        }
-      ],
-      hoverList: []
     }
   },
   methods: {
-    enter() {
+    menuEnter (e, i) {
+      e.target.children[1].style.display = 'block'
     },
-    mouseleave() {
+    menuleave (e, i) {
+      e.target.children[1].style.display = 'none'
+    },
+    menuClick (i) {
+      this.$emit('menuClick', i)
+    },
+    itemClick (i) {
+      this.$emit('itemClick', i)
     }
   }
 }
@@ -77,6 +61,22 @@ export default {
     & > img {
       margin: .35em 0;
     }
+    .hover-list {
+      display: none;
+      color: black;
+      position: absolute;
+      top: 2px;
+      left: 86px;
+      width: 400px;
+      & > div {
+        width: 70px;
+        float: left;
+        display: inline-block;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        padding: 0.4em .4em;
+      }
+    }
   }
   .menu-item + .menu-item {
     border-top: 1px solid white;
@@ -84,7 +84,7 @@ export default {
   .menu-item:hover {
     background: rgb(28,109,200);
   }
-  .menu-item:hover ::before{
+  .menu-content:hover ::before{
     content: " ";
     width: 4px;
     height: 100%;
