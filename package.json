@@ -1,6 +1,6 @@
 {
   "name": "block-menu",
-  "version": "1.0.0-2",
+  "version": "1.0.0-4",
   "description": "menus",
   "main": "dist/block-menu.js",
   "scripts": {
